@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-#[ObservedBy(TaskObserver::class)]
+//error javue so ova
+//#[ObservedBy(TaskObserver::class)]
 class Task extends Model
 {
     use HasFactory;

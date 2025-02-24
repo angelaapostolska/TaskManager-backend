@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('category');
-            $table->string('state');
+            $table->string('state')->default(\App\Enums\TaskState::PENDING->value);
             $table->timestamps();
         });
     }

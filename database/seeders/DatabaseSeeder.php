@@ -16,10 +16,15 @@ class DatabaseSeeder extends Seeder
     {
 
         //User::factory(3)->create();
-        echo "Memory before seeding: " . memory_get_usage() . " bytes\n";
+//        echo "Memory before seeding: " . memory_get_usage() . " bytes\n";
+//
 
-        Task::factory()->count(10)->create();
-
-        echo "Memory after seeding: " . memory_get_usage() . " bytes\n";
-    }
+//        Task::factory()->count(1)->create();
+//
+//        echo "Memory after seeding: " . memory_get_usage() . " bytes\n";
+//
+//
+//        ini_set('memory_limit', '-1');
+        $this->call([TaskSeeder::class]);
+}
 }

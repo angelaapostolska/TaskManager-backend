@@ -19,7 +19,7 @@ class TaskFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence,
-            'description' => $this->faker->paragraph(2),
+            'description' => "test",
             'category' => $this->faker->randomElement([TaskCategory::URGENT, TaskCategory::LEAST_URGENT, TaskCategory::MID]),
             //state set in a observer
         ];
