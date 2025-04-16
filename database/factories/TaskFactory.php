@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\TaskCategory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class TaskFactory extends Factory
             'description' => "test",
             'category' => $this->faker->randomElement([TaskCategory::URGENT, TaskCategory::LEAST_URGENT, TaskCategory::MID]),
             //state set in a observer
+            'user_id' => User::factory(),
         ];
     }
 }

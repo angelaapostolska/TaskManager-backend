@@ -13,7 +13,9 @@ class TaskObserver
     public function creating(Task $task): void
     {
         $task->state = TaskState::PENDING;
-        $task->save();
+        //Laravel calls creating() before saving, so if you call save()
+        //inside it, it triggers creating() again… and again…
+        //$task->save();
     }
 
     /**

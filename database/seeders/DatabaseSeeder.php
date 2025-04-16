@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
 //
 //
 //        ini_set('memory_limit', '-1');
-        $this->call([TaskSeeder::class]);
-}
+//        $this->call([TaskSeeder::class]);
+        Task::Factory(10)->create();
+        User::factory(10)->create();
+    }
 }
