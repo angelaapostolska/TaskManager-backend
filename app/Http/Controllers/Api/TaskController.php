@@ -11,6 +11,7 @@ use App\Http\Resources\TaskResource;
 use App\MarkPending;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -28,7 +29,14 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request): TaskResource
     {
+
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(["error"=>"unauthorized"], 401);
+        }
+
         $validatedData = $request->validated();
+        $validatedData['user_id'] = $user->id;
         $task = Task::query()->create($validatedData);
         return new TaskResource($task);
     }

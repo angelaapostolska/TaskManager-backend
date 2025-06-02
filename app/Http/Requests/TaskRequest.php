@@ -23,8 +23,8 @@ class TaskRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'description' => 'required|string',
-            'category' => 'required|string|in:urgent,mid,least_urgent',
+            'description' => 'nullable|string',
+            'category' => 'required|string|in:urgent,mid,least urgent',
             'state' => 'required|string|in:pending,completed,deleted',
             'end_date' => 'nullable|date',
         ];
