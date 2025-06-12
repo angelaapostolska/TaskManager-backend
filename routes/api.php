@@ -3,6 +3,7 @@
 use App\Actions\DeleteTask;
 use App\Actions\MarkCompleted;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\TaskController;
 use App\MarkPending;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 //public route: login
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::post('/register', [RegisterController::class, 'register']);
 //protected routes
 Route::middleware('auth:sanctum')->group(function () {
 
