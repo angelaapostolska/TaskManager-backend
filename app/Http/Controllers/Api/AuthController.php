@@ -40,4 +40,17 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function me(Request $request)
+    {
+        $user = $request->user();
+        if ($user) {
+            return response()->json([
+                'user' => $user,
+                'access_token' => $user->createToken('auth_token')->plainTextToken,
+            ]);
+        } else {
+            return response()->json(['message' => 'No User Found'], 401);
+        }
+    }
 }
