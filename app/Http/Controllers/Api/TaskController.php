@@ -11,6 +11,7 @@ use App\Http\Resources\TaskResource;
 use App\MarkPending;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
@@ -83,5 +84,15 @@ class TaskController extends Controller
         abort_if($task->state === TaskState::DELETED, 403, 'Task is already deleted');
         (new DeleteTask)->handle($task);
         return response()->json(['message' => 'Task successfully deleted.']);
+    }
+
+    public function myTasks(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $user = $request->user();
+        if (!$user) {
+            response()->json(["error"=>"unauthorized"], 401);
+        }
+        $tasks = Task::query()->where('user_id', $user->id)->get();
+        return TaskResource::collection($tasks);
     }
 }

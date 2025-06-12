@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Task related routes
     Route::apiResource('tasks', TaskController::class);
+    Route::get('/myTasks', [TaskController::class, 'myTasks']);
     Route::patch('/tasks/{task}/completeTask', [MarkCompleted::class, 'handle']);
     Route::patch('/tasks/{task}/deleteTask', [DeleteTask::class, 'handle']);
 });
