@@ -92,7 +92,28 @@ class TaskController extends Controller
         if (!$user) {
             response()->json(["error"=>"unauthorized"], 401);
         }
-        $tasks = Task::query()->where('user_id', $user->id)->get();
+
+        $query = Task::query()->where('user_id', $user->id);
+
+        //filtering
+        if ($request->filled('category')) {
+            $query->where('category', $request->input('category'));
+        }
+        if ($request->filled('state')) {
+            $query->where('state', $request->input('state'));
+        }
+        if ($request->filled("end_date_before")) {
+            $query->where('end_date', "<=", $request->input('end_date_before'));
+        }
+        if ($request->filled("end_date_after")) {
+            $query->where('end_date', ">=", $request->input('end_date_after'));
+        }
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->input('search') . '%');
+        }
+
+        $tasks = $query->latest()->get();
+
         return TaskResource::collection($tasks);
     }
 }
