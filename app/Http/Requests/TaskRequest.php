@@ -22,8 +22,8 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
-            'description' => 'nullable|string',
+            'title' => 'required|string|max:80',
+            'description' => 'nullable|string|max:250',
             'category' => 'required|string|in:urgent,mid,least urgent',
             'state' => 'required|string|in:pending,completed,deleted',
             'end_date' => 'nullable|date',
