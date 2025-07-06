@@ -9,7 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\MarkPending;
+use App\Models\Board;
 use App\Models\Task;
+use http\Env\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -115,5 +117,54 @@ class TaskController extends Controller
         $tasks = $query->latest()->get();
 
         return TaskResource::collection($tasks);
+    }
+
+    public function myTasksByBoard(Request $request, Board $board)
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(["error" => "unauthorized"], 401);
+        }
+
+        $query = Task::where('user_id', $user->id)->where('board_id', $board->id);
+
+        // Optional: same filtering as in myTasks
+        if ($request->filled('category')) {
+            $query->where('category', $request->input('category'));
+        }
+        if ($request->filled('state')) {
+            $query->where('state', $request->input('state'));
+        }
+
+        return TaskResource::collection($query->latest()->get());
+    }
+
+    public function todayStats(Request $request)
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(["error"=>"unauthorized"], 401);
+        }
+        $today = now()->toDateString();
+
+        $totalTasksToday = Task::query()
+            ->where('user_id', $user->id)
+            ->whereDate('end_date', $today);
+
+        $completedTasksToday = Task::query()
+            ->where('user_id', $user->id)
+            ->whereDate('end_date', $today)
+            ->where('state', TaskState::COMPLETED);
+
+        $totalTasksTodayCount = $totalTasksToday->count();
+        $completedTasksTodayCount = $completedTasksToday->count();
+
+        $percentage = $totalTasksTodayCount > 0 ? round(($completedTasksTodayCount / $totalTasksTodayCount) * 100, 2) : 0;
+
+        return response()->json([
+            "totalTasksToday" => $totalTasksTodayCount,
+            "completedTasksToday" => $completedTasksTodayCount,
+            "percentage" => $percentage,
+        ]);
     }
 }
