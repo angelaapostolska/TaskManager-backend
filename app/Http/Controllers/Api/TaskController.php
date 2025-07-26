@@ -92,7 +92,7 @@ class TaskController extends Controller
     {
         $user = $request->user();
         if (!$user) {
-            response()->json(["error"=>"unauthorized"], 401);
+            return response()->json(["error"=>"unauthorized"], 401);
         }
 
         $query = Task::query()->where('user_id', $user->id);
@@ -110,11 +110,25 @@ class TaskController extends Controller
         if ($request->filled("end_date_after")) {
             $query->where('end_date', ">=", $request->input('end_date_after'));
         }
-        if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->input('search') . '%');
-        }
-
+        //fetch all tasks
         $tasks = $query->latest()->get();
+
+        $search = $request->input('search', '');
+        //add a matched flag to a task that matches the search query
+        $tasks = $tasks->map(function ($task) use ($search) {
+            $task->matched = false;
+
+            if ($search){
+                $titleMatch = stripos($task->title, $search) !== false;
+                $descMatch = stripos($task->description, $search) !== false;
+
+                if ($titleMatch || $descMatch) {
+                    $task->matched = true;
+                }
+            }
+
+            return $task;
+        });
 
         return TaskResource::collection($tasks);
     }

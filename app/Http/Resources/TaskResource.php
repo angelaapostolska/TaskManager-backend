@@ -21,7 +21,8 @@ class TaskResource extends JsonResource
             'category' => $this->category,
             'state' => $this->state,
             'end_date' => $this->end_date,
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'matched' => $this->matched ?? false,
         ];
     }
 }
