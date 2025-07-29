@@ -23,6 +23,7 @@ class TaskResource extends JsonResource
             'end_date' => $this->end_date,
             'created_at' => $this->created_at,
             'matched' => $this->matched ?? false,
+            'board_id' => $this->board_id,
         ];
     }
 }

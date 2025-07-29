@@ -3,6 +3,7 @@
 use App\Actions\DeleteTask;
 use App\Actions\MarkCompleted;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BoardController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\TaskController;
 use App\MarkPending;
@@ -33,4 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //completed task from the day
     Route::get('/myTasks/todayStats', [TaskController::class, 'todayStats']);
+
+    //boards routes
+    Route::apiResource('boards', BoardController::class);
 });

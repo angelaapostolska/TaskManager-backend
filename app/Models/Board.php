@@ -10,10 +10,15 @@ class Board extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['title', 'description', 'user_id'];
 
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

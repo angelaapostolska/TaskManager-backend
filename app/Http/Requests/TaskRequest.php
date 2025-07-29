@@ -27,6 +27,7 @@ class TaskRequest extends FormRequest
             'category' => 'required|string|in:urgent,mid,least urgent',
             'state' => 'required|string|in:pending,completed,deleted',
             'end_date' => 'nullable|date',
+            'board_id' => 'required|integer|exists:boards,id',
         ];
     }
 }
