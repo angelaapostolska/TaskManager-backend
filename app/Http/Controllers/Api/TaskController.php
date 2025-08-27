@@ -97,6 +97,12 @@ class TaskController extends Controller
 
         $query = Task::query()->where('user_id', $user->id);
 
+
+        //board filtering
+        if ($request->filled('board_id')) {
+            $query->where('board_id', $request->input('board_id'));
+        }
+
         //filtering
         if ($request->filled('category')) {
             $query->where('category', $request->input('category'));
@@ -116,7 +122,7 @@ class TaskController extends Controller
         $search = $request->input('search', '');
         //add a matched flag to a task that matches the search query
         $tasks = $tasks->map(function ($task) use ($search) {
-            $task->matched = false;
+//            $task->matched = false;
 
             if ($search){
                 $titleMatch = stripos($task->title, $search) !== false;
